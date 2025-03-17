@@ -6,6 +6,7 @@
 #define TEST_IF_TRUE(condition)                                                                                        \
     if (!(condition)) {                                                                                                \
         printf("Condition %s failed on line %d\r\n", #condition, (int)__LINE__);                                       \
+        return -1;                                                                                                     \
     }
 
 int
