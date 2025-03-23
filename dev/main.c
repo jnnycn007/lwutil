@@ -6,11 +6,13 @@
 #define TEST_IF_TRUE(condition)                                                                                        \
     if (!(condition)) {                                                                                                \
         printf("Condition %s failed on line %d\r\n", #condition, (int)__LINE__);                                       \
-        return -1;                                                                                                     \
+        retval = -1;                                                                                                   \
     }
 
 int
 main(void) {
+    int retval = 0;
+
     /* Test storing integer device */
     {
         uint8_t arr[10U];
@@ -155,5 +157,5 @@ main(void) {
         TEST_IF_TRUE(val == 70);
     }
     printf("Done\r\n");
-    return 0;
+    return retval;
 }
