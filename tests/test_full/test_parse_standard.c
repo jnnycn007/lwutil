@@ -1,4 +1,3 @@
-#include <stdint.h>
 #include <stdio.h>
 #include <string.h>
 #include "lwutil/lwutil.h"
@@ -10,7 +9,7 @@
     }
 
 int
-main(void) {
+test_run(void) {
     int retval = 0;
 
     /* Test storing integer device */
@@ -156,6 +155,5 @@ main(void) {
         val = LWUTIL_MAP(10, 5, 15, 90, 50);
         TEST_IF_TRUE(val == 70);
     }
-    printf("Done\r\n");
     return retval;
 }
