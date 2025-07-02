@@ -15,7 +15,9 @@ test_run(void) {
     /* Test storing integer device */
     {
         uint8_t arr[10U];
+        uint8_t* ptr;
 
+        /* Standard version */
         memset(arr, 0x00, sizeof(arr));
         lwutil_st_u16_le(0x1234U, arr);
         TEST_IF_TRUE(arr[0] == 0x34U && arr[1] == 0x12U && arr[2] == 0x00U);
@@ -31,22 +33,60 @@ test_run(void) {
         memset(arr, 0x00, sizeof(arr));
         lwutil_st_u32_be(0x12345678, arr);
         TEST_IF_TRUE(arr[3] == 0x78U && arr[2] == 0x56U && arr[1] == 0x34U && arr[0] == 0x12 && arr[4] == 0x00U);
+
+        /* Extended version */
+        memset(arr, 0x00, sizeof(arr));
+        ptr = arr;
+        lwutil_st_u16_le_ex(0x1234U, (void**)&ptr);
+        TEST_IF_TRUE(arr[0] == 0x34U && arr[1] == 0x12U && arr[2] == 0x00U && ptr == &arr[2]);
+
+        memset(arr, 0x00, sizeof(arr));
+        ptr = arr;
+        lwutil_st_u16_be_ex(0x1234U, (void**)&ptr);
+        TEST_IF_TRUE(arr[0] == 0x12U && arr[1] == 0x34U && arr[2] == 0x00U && ptr == &arr[2]);
+
+        memset(arr, 0x00, sizeof(arr));
+        ptr = arr;
+        lwutil_st_u32_le_ex(0x12345678U, (void**)&ptr);
+        TEST_IF_TRUE(arr[0] == 0x78U && arr[1] == 0x56U && arr[2] == 0x34U && arr[3] == 0x12U && arr[4] == 0x00U
+                     && ptr == &arr[4]);
+
+        memset(arr, 0x00, sizeof(arr));
+        ptr = arr;
+        lwutil_st_u32_be_ex(0x12345678, (void**)&ptr);
+        TEST_IF_TRUE(arr[3] == 0x78U && arr[2] == 0x56U && arr[1] == 0x34U && arr[0] == 0x12 && arr[4] == 0x00U
+                     && ptr == &arr[4]);
     }
     /* Test loading integer device */
     {
         uint8_t arr[] = {0x12U, 0x34U, 0x56U, 0x78U};
+        uint8_t* ptr;
         uint32_t u32;
         uint16_t u16;
 
+        /* Standard version */
         u16 = lwutil_ld_u16_le(arr);
         TEST_IF_TRUE(u16 == 0x3412U);
         u16 = lwutil_ld_u16_be(arr);
         TEST_IF_TRUE(u16 == 0x1234U);
-
         u32 = lwutil_ld_u32_le(arr);
         TEST_IF_TRUE(u32 == 0x78563412U);
         u32 = lwutil_ld_u32_be(arr);
         TEST_IF_TRUE(u32 == 0x12345678U);
+
+        /* Extended version */
+        ptr = arr;
+        u16 = lwutil_ld_u16_le_ex((void**)&ptr);
+        TEST_IF_TRUE(u16 == 0x3412U && ptr == &arr[2]);
+        ptr = arr;
+        u16 = lwutil_ld_u16_be_ex((void**)&ptr);
+        TEST_IF_TRUE(u16 == 0x1234U && ptr == &arr[2]);
+        ptr = arr;
+        u32 = lwutil_ld_u32_le_ex((void**)&ptr);
+        TEST_IF_TRUE(u32 == 0x78563412U && ptr == &arr[4]);
+        ptr = arr;
+        u32 = lwutil_ld_u32_be_ex((void**)&ptr);
+        TEST_IF_TRUE(u32 == 0x12345678U && ptr == &arr[4]);
     }
     /* Bit set/reset */
     {
