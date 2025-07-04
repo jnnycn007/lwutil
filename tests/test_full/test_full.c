@@ -20,19 +20,31 @@ test_run(void) {
         /* Standard version */
         memset(arr, 0x00, sizeof(arr));
         lwutil_st_u16_le(0x1234U, arr);
-        TEST_IF_TRUE(arr[0] == 0x34U && arr[1] == 0x12U && arr[2] == 0x00U);
+        TEST_IF_TRUE(arr[0] == 0x34U);
+        TEST_IF_TRUE(arr[1] == 0x12U);
+        TEST_IF_TRUE(arr[2] == 0x00U);
 
         memset(arr, 0x00, sizeof(arr));
         lwutil_st_u16_be(0x1234, arr);
-        TEST_IF_TRUE(arr[0] == 0x12U && arr[1] == 0x34U && arr[2] == 0x00U);
+        TEST_IF_TRUE(arr[0] == 0x12U);
+        TEST_IF_TRUE(arr[1] == 0x34U);
+        TEST_IF_TRUE(arr[2] == 0x00U);
 
         memset(arr, 0x00, sizeof(arr));
         lwutil_st_u32_le(0x12345678U, arr);
-        TEST_IF_TRUE(arr[0] == 0x78U && arr[1] == 0x56U && arr[2] == 0x34U && arr[3] == 0x12U && arr[4] == 0x00U);
+        TEST_IF_TRUE(arr[0] == 0x78U);
+        TEST_IF_TRUE(arr[1] == 0x56U);
+        TEST_IF_TRUE(arr[2] == 0x34U);
+        TEST_IF_TRUE(arr[3] == 0x12U);
+        TEST_IF_TRUE(arr[4] == 0x00U);
 
         memset(arr, 0x00, sizeof(arr));
         lwutil_st_u32_be(0x12345678, arr);
-        TEST_IF_TRUE(arr[3] == 0x78U && arr[2] == 0x56U && arr[1] == 0x34U && arr[0] == 0x12 && arr[4] == 0x00U);
+        TEST_IF_TRUE(arr[0] == 0x12U);
+        TEST_IF_TRUE(arr[1] == 0x34U);
+        TEST_IF_TRUE(arr[2] == 0x56U);
+        TEST_IF_TRUE(arr[3] == 0x78U);
+        TEST_IF_TRUE(arr[4] == 0x00U);
 
         /* 
          * Extended version accepts the pointer to pointer to the memory,
@@ -52,71 +64,103 @@ test_run(void) {
         memset(arr, 0x00, sizeof(arr));
         ptr = arr;
         lwutil_st_u16_le_ex(0x1234U, (void**)&ptr);
-        TEST_IF_TRUE(arr[0] == 0x34U && arr[1] == 0x12U && arr[2] == 0x00U && ptr == &arr[2]);
-        /* Continue with the next write */
         lwutil_st_u16_le_ex(0x5678U, (void**)&ptr);
-        TEST_IF_TRUE(arr[0] == 0x34U && arr[1] == 0x12U && arr[2] == 0x78U && arr[3] == 0x56U && arr[4] == 0x00U
-                     && ptr == &arr[4]);
+        TEST_IF_TRUE(arr[0] == 0x34U);
+        TEST_IF_TRUE(arr[1] == 0x12U);
+        TEST_IF_TRUE(arr[2] == 0x78U);
+        TEST_IF_TRUE(arr[3] == 0x56U);
+        TEST_IF_TRUE(arr[4] == 0x00U);
+        TEST_IF_TRUE(ptr == &arr[4]);
 
         memset(arr, 0x00, sizeof(arr));
         ptr = arr;
         lwutil_st_u16_be_ex(0x1234U, (void**)&ptr);
-        TEST_IF_TRUE(arr[0] == 0x12U && arr[1] == 0x34U && arr[2] == 0x00U && ptr == &arr[2]);
-        /* Continue with the next write */
         lwutil_st_u16_be_ex(0x5678U, (void**)&ptr);
-        TEST_IF_TRUE(arr[0] == 0x12U && arr[1] == 0x34U && arr[2] == 0x56U && arr[3] == 0x78U && arr[4] == 0x00U
-                     && ptr == &arr[4]);
+        TEST_IF_TRUE(arr[0] == 0x12U);
+        TEST_IF_TRUE(arr[1] == 0x34U);
+        TEST_IF_TRUE(arr[2] == 0x56U);
+        TEST_IF_TRUE(arr[3] == 0x78U);
+        TEST_IF_TRUE(arr[4] == 0x00U);
+        TEST_IF_TRUE(ptr == &arr[4]);
 
         memset(arr, 0x00, sizeof(arr));
         ptr = arr;
         lwutil_st_u32_le_ex(0x12345678U, (void**)&ptr);
-        TEST_IF_TRUE(arr[0] == 0x78U && arr[1] == 0x56U && arr[2] == 0x34U && arr[3] == 0x12U && arr[4] == 0x00U
-                     && ptr == &arr[4]);
-        /* Continue with the next write */
         lwutil_st_u32_le_ex(0x12345678U, (void**)&ptr);
-        TEST_IF_TRUE(arr[0] == 0x78U && arr[1] == 0x56U && arr[2] == 0x34U && arr[3] == 0x12U && arr[4] == 0x78U
-                     && arr[5] == 0x56U && arr[6] == 0x34U && arr[7] == 0x12U && arr[8] == 0x00U && ptr == &arr[8]);
+        TEST_IF_TRUE(arr[0] == 0x78U);
+        TEST_IF_TRUE(arr[1] == 0x56U);
+        TEST_IF_TRUE(arr[2] == 0x34U);
+        TEST_IF_TRUE(arr[3] == 0x12U);
+        TEST_IF_TRUE(arr[4] == 0x78U);
+        TEST_IF_TRUE(arr[5] == 0x56U);
+        TEST_IF_TRUE(arr[6] == 0x34U);
+        TEST_IF_TRUE(arr[7] == 0x12U);
+        TEST_IF_TRUE(arr[8] == 0x00U);
+        TEST_IF_TRUE(ptr == &arr[8]);
 
         memset(arr, 0x00, sizeof(arr));
         ptr = arr;
         lwutil_st_u32_be_ex(0x12345678, (void**)&ptr);
-        TEST_IF_TRUE(arr[0] == 0x12 && arr[1] == 0x34U && arr[2] == 0x56U && arr[3] == 0x78U && arr[4] == 0x00
-                     && ptr == &arr[4]);
-        /* Continue with the next write */
         lwutil_st_u32_be_ex(0x12345678, (void**)&ptr);
-        TEST_IF_TRUE(arr[0] == 0x12 && arr[1] == 0x34U && arr[2] == 0x56U && arr[3] == 0x78U && arr[4] == 0x12
-                     && arr[5] == 0x34U && arr[6] == 0x56U && arr[7] == 0x78U && arr[8] == 0x00U && ptr == &arr[8]);
+        TEST_IF_TRUE(arr[0] == 0x12);
+        TEST_IF_TRUE(arr[1] == 0x34U);
+        TEST_IF_TRUE(arr[2] == 0x56U);
+        TEST_IF_TRUE(arr[3] == 0x78U);
+        TEST_IF_TRUE(arr[4] == 0x12);
+        TEST_IF_TRUE(arr[5] == 0x34U);
+        TEST_IF_TRUE(arr[6] == 0x56U);
+        TEST_IF_TRUE(arr[7] == 0x78U);
+        TEST_IF_TRUE(arr[8] == 0x00U);
+        TEST_IF_TRUE(ptr == &arr[8]);
     }
     /* Test loading integer device */
     {
-        uint8_t arr[] = {0x12U, 0x34U, 0x56U, 0x78U};
+        uint8_t arr[] = {0x12U, 0x34U, 0x56U, 0x78U, 0xDEU, 0xADU, 0xBEU, 0xEFU};
         uint8_t* ptr;
-        uint32_t u32;
-        uint16_t u16;
+        uint32_t u32_1, u32_2;
+        uint16_t u16_1, u16_2;
 
         /* Standard version */
-        u16 = lwutil_ld_u16_le(arr);
-        TEST_IF_TRUE(u16 == 0x3412U);
-        u16 = lwutil_ld_u16_be(arr);
-        TEST_IF_TRUE(u16 == 0x1234U);
-        u32 = lwutil_ld_u32_le(arr);
-        TEST_IF_TRUE(u32 == 0x78563412U);
-        u32 = lwutil_ld_u32_be(arr);
-        TEST_IF_TRUE(u32 == 0x12345678U);
+        u16_1 = lwutil_ld_u16_le(arr);
+        TEST_IF_TRUE(u16_1 == 0x3412U);
+        u16_1 = lwutil_ld_u16_be(arr);
+        TEST_IF_TRUE(u16_1 == 0x1234U);
+        u32_1 = lwutil_ld_u32_le(arr);
+        TEST_IF_TRUE(u32_1 == 0x78563412U);
+        u32_1 = lwutil_ld_u32_be(arr);
+        TEST_IF_TRUE(u32_1 == 0x12345678U);
 
         /* Extended version */
+
+        /* 16-bit */
         ptr = arr;
-        u16 = lwutil_ld_u16_le_ex((const void**)&ptr);
-        TEST_IF_TRUE(u16 == 0x3412U && ptr == &arr[2]);
+        u16_1 = lwutil_ld_u16_le_ex((const void**)&ptr);
+        u16_2 = lwutil_ld_u16_le_ex((const void**)&ptr);
+        TEST_IF_TRUE(u16_1 == 0x3412U);
+        TEST_IF_TRUE(u16_2 == 0x7856);
+        TEST_IF_TRUE(ptr == &arr[4]);
+
         ptr = arr;
-        u16 = lwutil_ld_u16_be_ex((const void**)&ptr);
-        TEST_IF_TRUE(u16 == 0x1234U && ptr == &arr[2]);
+        u16_1 = lwutil_ld_u16_be_ex((const void**)&ptr);
+        u16_2 = lwutil_ld_u16_be_ex((const void**)&ptr);
+        TEST_IF_TRUE(u16_1 == 0x1234U);
+        TEST_IF_TRUE(u16_2 == 0x5678);
+        TEST_IF_TRUE(ptr == &arr[4]);
+
+        /* 32-bit */
         ptr = arr;
-        u32 = lwutil_ld_u32_le_ex((const void**)&ptr);
-        TEST_IF_TRUE(u32 == 0x78563412U && ptr == &arr[4]);
+        u32_1 = lwutil_ld_u32_le_ex((const void**)&ptr);
+        u32_2 = lwutil_ld_u32_le_ex((const void**)&ptr);
+        TEST_IF_TRUE(u32_1 == 0x78563412U);
+        TEST_IF_TRUE(u32_2 == 0xEFBEADDE);
+        TEST_IF_TRUE(ptr == &arr[8]);
+
         ptr = arr;
-        u32 = lwutil_ld_u32_be_ex((const void**)&ptr);
-        TEST_IF_TRUE(u32 == 0x12345678U && ptr == &arr[4]);
+        u32_1 = lwutil_ld_u32_be_ex((const void**)&ptr);
+        u32_2 = lwutil_ld_u32_be_ex((const void**)&ptr);
+        TEST_IF_TRUE(u32_1 == 0x12345678U);
+        TEST_IF_TRUE(u32_2 == 0xDEADBEEFU);
+        TEST_IF_TRUE(ptr == &arr[8]);
     }
     /* Bit set/reset */
     {
