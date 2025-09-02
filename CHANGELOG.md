@@ -2,6 +2,8 @@
 
 ## Develop
 
+## 1.4.0
+
 - Rework library CMake with removed INTERFACE type
 - Add extended loading/storing option
 
