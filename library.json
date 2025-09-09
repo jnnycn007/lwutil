@@ -31,6 +31,8 @@
         ]
     },
     "build": {
-        "includeDir": "lwutil/src/include"
+        "includeDir": "lwutil/src/include",
+        "srcDir": ".",
+        "srcFilter": "+<lwutil>"
     }
 }
