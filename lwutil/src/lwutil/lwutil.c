@@ -96,7 +96,7 @@ lwutil_u32_to_8asciis(uint32_t hex, char* ascii) {
  * \param           ptr: Array pointer to load data from
  * \param           ptr_len: Input array length
  * \param           val_out: Pointer to variable to write result value
- * \return          Number of bytes written (stored). `0` in case of an error.
+ * \return          Number of bytes used to load the full number. Set to `0` in case of an error.
  */
 uint8_t
 lwutil_ld_u32_varint(const void* ptr, size_t ptr_len, uint32_t* val_out) {
@@ -134,7 +134,7 @@ lwutil_ld_u32_varint(const void* ptr, size_t ptr_len, uint32_t* val_out) {
  * \param           val: Value to encode into byte sequence
  * \param           ptr: Array to write output result
  * \param           ptr_len: Length of an input array
- * \return          Number of bytes written (stored). `0` in case of an error.
+ * \return          Number of bytes written (stored) in the memory. Set to `0` in case of an error.
  */
 uint8_t
 lwutil_st_u32_varint(uint32_t val, void* ptr, size_t ptr_len) {
