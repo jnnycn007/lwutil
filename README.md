@@ -1,6 +1,8 @@
 # C language utility library
 
-Set of different utility functions and macros usually used in the various applications.
+LwUTIL is a lightweight utility library that collects small helper macros and functions
+for value comparisons, bit manipulation, endian-aware serialization and a few common
+algorithms, commonly hand-written again and again in day-to-day C/C++ development.
 
 [Open documentation](https://docs.majerle.eu/projects/lwutil/)
 
